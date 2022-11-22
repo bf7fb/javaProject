@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link href="css/login.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!--    <img id="myimg" src="animalImgs/startAnimal1.jpg">-->
+
+<div id="loginDiv" style="height: 350px">
+    <form action="" id="form">
+        <h1 id="loginMsg">LOGIN IN</h1>
+        <div id="errorMsg">用户名或密码不正确</div>
+        <p>Username:<input id="username" name="username" type="text"></p>
+
+        <p>Password:<input id="password" name="password" type="password"></p>
+        <p>Remember:<input id="remember" name="remember" type="checkbox"></p>
+        <div id="subDiv">
+            <input type="submit" class="button" value="login up">
+            <a href="register.html">没有账号？</a>
+            <a href="administratorLogin.jsp">管理员登录</a>
+        </div>
+    </form>
+
+</div>
+
+<style type="text/css">
+    body{
+
+        background: url("animalImgs/startAnimal1.jpg") no-repeat 0px 0px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        -moz-background-size: 100% 100%;
+
+    }
+</style>
+
+<script>
+    var imgs=["../webapp/animalImgs/startAnimal1.jpg","../webapp/animalImgs/startAnimal2.jpg","../webapp/animalImgs/startAnimal3.jpg","../webapp/animalImgs/startAnimal4.jpg","../webapp/animalImgs/startAnimal5.jpg","../webapp/animalImgs/startAnimal6.jpg","../webapp/animalImgs/startAnimal7.jpg"];
+    function changeImgs(){
+        var index;
+        index=Math.floor(Math.random()*imgs.length);
+        console.log(index);
+        document.body.style.backgroundImage="url("+imgs[index]+")";
+    }
+    var time = 0;
+    setInterval(function skip (){
+        changeImgs()
+    },2000);
+
+</script>
+
+</body>
+</html>
+

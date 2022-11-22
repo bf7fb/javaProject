@@ -1,0 +1,13 @@
+环境搭建：jdk 8 ，maven3.8.6 ，mysql 8.0.29 ，tomcat8.5.68（其中element ui vue axious 文件项目中都有，在webapp的js目录下），
+数据库建表（sql源文件已经存放在文件夹里了）
+数据库 账号：root 密码：wz521102..  （账号密码不一样的话，可以修改mybatis-config.xml 文件中的账号密码即可）
+项目的实现：
+基于maven3.8.6搭建的web工程
+后端：java 
+数据库：mysql
+前端：vue+elementui+jsp+ajax（使用axious异步框架来完成）
+框架：mybatis
+
+项目于的启动：
+（1）将Hait-Animal以maven的形式导入idea，idea右侧maven面板中 在项目中找到plugin，找到tomcat7-run通过插件来启动。如果启动不了，可以清除一下缓存。tomcat7-clean；
+（2）将Hait-Animal.war的war放入tomcat的webapps下，在tomcat的bin目录下start.bat启动。访问 http://localhost:8080/Hait-Animal/animal.html 即可；

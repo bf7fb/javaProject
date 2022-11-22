@@ -1,0 +1,272 @@
+<!-- 上传显示图片-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HAIT 爱心宠物站</title>
+  <style>
+    .el-table .warning-row {
+      background: oldlace;
+    }
+
+    .el-table .success-row {
+      background: #f0f9eb;
+    }
+  </style>
+
+</head>
+<body>
+<h1 >留言面板</h1>
+
+<div id="app">
+
+  <el-row>
+
+    <el-button type="danger" plain @click="deleteByIds" >批量删除</el-button>
+
+  </el-row>
+
+  <!--添加联系我们 对话框表单-->
+  <template>
+    <el-table
+            :data="tableDataMessage"
+            style="width: 100%"
+            :row-class-name="tableRowClassName"
+            @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+              type="selection"
+              width="55">
+      </el-table-column>
+
+      <el-table-column
+              prop="id"
+              label="留言id"
+              align="center"
+      >
+      </el-table-column>
+
+      <el-table-column
+              prop="name"
+              label="姓名"
+              align="center"
+      >
+      </el-table-column>
+
+      <el-table-column
+              prop="tel"
+              label="联系方式"
+              align="center"
+      >
+      </el-table-column>
+
+      <el-table-column
+              prop="description"
+              label="留言"
+              align="center"
+      >
+      </el-table-column>
+
+      <!--            这样写 就可以通过scope和row获取每一行的数据-->
+      <el-table-column label="操作" align="center">
+
+        <template slot-scope="scope">
+
+          <el-button type="danger"
+                     @click="deleteById(scope.$index, scope.row)">删除
+          </el-button>
+
+
+        </template>
+
+      </el-table-column>
+
+    </el-table>
+  </template>
+
+
+
+
+</div>
+
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script>
+  new Vue({
+    el: "#app",
+    // 页面一经加载 便会执行mounted
+    mounted(){
+
+      this.selectMessage();
+
+    },
+    methods: {
+      tableRowClassName({row, rowIndex}) {
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
+      },
+      // 复选框选中后执行的方法
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+        console.log(this.multipleSelection)
+      },
+      // 查看相关留言信息
+      selectMessage(){
+
+        let _this = this;
+        axios({
+          method:"get",
+          url:"http://localhost:8080/Hait-Animal/message/selectAllMessage ",
+          // 获取数据后 执行function回调函数
+        }).then(resp =>{
+          _this.tableDataMessage = resp.data;
+        })
+      },
+
+      deleteById(index,row){
+        // 弹出提示框防止误操作 确定执行then逻辑 取消执行catch
+        this.$confirm('是否确定删除, 请选择?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //执行删除逻辑
+          // 1.发送ajax请求
+          let _this = this;
+          // console.log("删除" + row.id);
+          // 发送ajax请求 将添加的数据传给后端
+          axios({
+            method: "post",
+            url: "http://localhost:8080/Hait-Animal/message/deleteById",
+            // axios中的this为浏览器 而外面的this为vue对象
+            data: _this.selectedIdDel = row.id
+          }).then(function (resp){
+            // 判断是否添加成功
+            if(resp.data == "success"){
+              // 一个提示信息
+              _this.$message({
+                message: '恭喜您,删除成功~',
+                type: 'success'
+              });
+            }
+            // 跳转页面 查询所有
+            _this.selectMessage();
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
+
+      deleteByIds() {
+        // 弹出提示框防止误操作 确定执行then逻辑 取消执行catch
+        this.$confirm('是否删除所选数据, 请选择?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //执行删除逻辑
+          // 1.判断用户是否选择数据 避免删除0 误操作
+          if(this.multipleSelection.length == 0){
+            //alert("删除失败~ 请选择要删除的元素")
+            this.$alert('删除失败~ 请选择要删除的元素', '标题名称', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.$message({
+                  type: 'warning',
+                  message: `action: ${ action }`
+                });
+              }
+            });
+          }else {
+
+            let selectionElement; // 被选中的元素 一条数据
+            for (let i = 0; i < this.multipleSelection.length; i++) {
+              selectionElement = this.multipleSelection[i];
+              this.selectedIdsDel[i] = selectionElement.id;
+            }
+            // 2.发送ajax请求
+            let _this = this;
+            // 发送ajax请求 将添加的数据传给后端
+            axios({
+              method: "post",
+              url: "http://localhost:8080/Hait-Animal/message/deleteByIds",
+              // axios中的this为浏览器 而外面的this为vue对象
+              data: _this.selectedIdsDel
+            }).then(function (resp){
+              // 判断是否添加成功
+              if(resp.data == "success"){
+                // 一个提示信息
+                _this.$message({
+                  message: '恭喜您,删除成功~',
+                  type: 'success'
+                });
+              }
+              // 跳转页面 查询所有
+              _this.selectMessage();
+            })
+
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      }
+
+    },
+    data() {
+      return {
+        // 当前页码
+        currentPage: 1,
+        // 每页显示条数 默认五条
+        pageSize : 5,
+        // 总记录条数
+        totalCount : 100,
+        // 删除时 被选中的id
+        selectedIdDel : 1,
+        // 批量删除时  被选中的ids们
+        selectedIdsDel : [],
+        // 复选框选中数据集合
+        multipleSelection: [],
+        // 留言表格数据
+        tableDataMessage: [{
+          id : '1',
+          name : '小明',
+          tel : '001',
+          description: "带包狗粮",
+        }, {
+          id : '1',
+          name : '小明',
+          tel : '001',
+          description: "带包狗粮",
+        }, {
+          id : '1',
+          name : '小明',
+          tel : '001',
+          description: "带包狗粮",
+        }, {
+          id : '1',
+          name : '小明',
+          tel : '001',
+          description: "带包狗粮",
+        }]
+      }
+    }
+  })
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangzhen.mapper.AnimalMapper">
+
+    <resultMap id="animalResultMap" type="animal">
+        <result property="animalName" column="animal_name" />
+        <result property="isLive" column="is_live" />
+    </resultMap>
+
+<!-- 修改动物信息-->
+    <update id="updateAnimal">
+        update tb_animal
+        <set>
+            <if test="animalName != null and animalName != '' ">
+                animal_name = #{animalName},
+            </if>
+            <if test="sex != null and sex != '' ">
+                sex = #{sex},
+            </if>
+            <if test="isLive != null and isLive != '' ">
+                is_live = #{isLive},
+            </if>
+            <if test="description != null and description != '' ">
+                description = #{description},
+            </if>
+
+        </set>
+        where id = #{id};
+    </update>
+    <!--    分页 且 条件 查询-->
+    <select id="selectByPageAndCondition" resultMap="animalResultMap">
+        select *
+        from tb_animal
+        <where>
+            <if test="animal.animalName != null and animal.animalName != '' ">
+                and  animal_name like #{animal.animalName}
+            </if>
+
+            <if test="animal.isLive != null and animal.isLive != '' ">
+                and  is_live like #{animal.isLive}
+            </if>
+
+            <if test="animal.description != null and animal.description != '' ">
+                and  description like #{animal.description}
+            </if>
+
+        </where>
+
+        limit #{begin} , #{size}
+
+    </select>
+
+    <select id="selectTotalCountByPageAndCondition" resultType="java.lang.Integer">
+        select count(*)
+        from tb_animal
+        <where>
+            <if test="animalName != null and animalName != '' ">
+                and  animal_name like #{animalName}
+            </if>
+
+            <if test="isLive != null and isLive != '' ">
+                and  is_live like #{isLive}
+            </if>
+
+            <if test="description != null and description != '' ">
+                and  description like #{description}
+            </if>
+
+        </where>
+    </select>
+
+<!--    批量删除-->
+    <delete id="deleteByIds">
+        delete from tb_animal where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+
+    </delete>
+
+<!--    修改数据-->
+    <update id="updateById">
+        update tb_animal
+        <set>
+            <if test="animalName != null and animalName != '' ">
+                animal_name = #{animalName},
+            </if>
+            <if test="sex != null and sex != '' ">
+                sex = #{sex},
+            </if>
+            <if test="isLive != null and isLive != '' ">
+                is_live = #{isLive},
+            </if>
+            <if test="description != null and description != '' ">
+                description = #{description},
+            </if>
+            <if test="likes != null">
+                likes = #{likes}
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
+
+
+</mapper>

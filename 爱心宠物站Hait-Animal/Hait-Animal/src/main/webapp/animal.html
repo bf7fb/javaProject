@@ -1,0 +1,577 @@
+<!-- 上传显示图片-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HAIT 爱心宠物站</title>
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+
+</head>
+<body>
+<h1 >HAIT 爱心宠物站</h1>
+
+<div id="app">
+    <!--搜索框表单-->
+    <el-form :inline="true" :model="animal" class="demo-form-inline">
+
+
+        <el-form-item label="动物名称">
+            <el-input v-model="animal.animalName" placeholder="动物名称"></el-input>
+        </el-form-item>
+
+        <el-form-item label="存活状态">
+            <el-input v-model="animal.isLive" placeholder="存活状态"></el-input>
+        </el-form-item>
+
+        <el-form-item label="动物描述">
+            <el-input v-model="animal.description" placeholder="动物描述"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+            <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+
+    </el-form>
+
+    <!--按钮-->
+
+    <el-row>
+
+        <el-button type="danger" plain @click="deleteByIds" >批量删除</el-button>
+        <el-button type="primary" plain @click="dialogVisible = true">新增</el-button>
+
+    </el-row>
+    <!--添加动物数据 对话框表单-->
+    <el-dialog
+            title="添加动物"
+            :visible.sync="dialogVisible"
+            width="30%"
+    >
+
+        <el-form ref="form" :model="animal" label-width="80px">
+            <el-form-item label="动物名称">
+                <el-input v-model="animal.animalName"></el-input>
+            </el-form-item>
+
+            <el-form-item label="动物性别">
+                <el-input v-model="animal.sex"></el-input>
+            </el-form-item>
+
+            <el-form-item label="存活状态">
+                <el-input v-model="animal.isLive"></el-input>
+            </el-form-item>
+
+            <el-form-item label="描述">
+                <el-input type="textarea" v-model="animal.description"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+                <el-button type="primary" @click="addAnimal">提交</el-button>
+                <el-button @click="dialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+<!--    修改动物对话框表单-->
+    <el-dialog
+            title="修改动物信息"
+            :visible.sync="update_dialogVisible"
+            width="30%"
+    >
+
+        <el-form ref="form" :model="updateAnimal" label-width="80px">
+            <el-form-item label="动物名称">
+                <el-input v-model="updateAnimal.animalName"></el-input>
+            </el-form-item>
+
+            <el-form-item label="动物性别">
+                <el-input v-model="updateAnimal.sex"></el-input>
+            </el-form-item>
+
+            <el-form-item label="存活状态">
+                <el-input v-model="updateAnimal.isLive"></el-input>
+            </el-form-item>
+
+            <el-form-item label="描述">
+                <el-input type="textarea" v-model="updateAnimal.description"></el-input>
+            </el-form-item>
+            <el-form-item label="点赞">
+                <el-input type="textarea" v-model="updateAnimal.likes"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+                <el-button type="primary" @click="updateById">提交</el-button>
+                <el-button @click="update_dialogVisible = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+
+    </el-dialog>
+
+    <!--表格-->
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                :row-class-name="tableRowClassName"
+                @selection-change="handleSelectionChange"
+        >
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    type="index"
+                    width="50">
+            </el-table-column>
+
+            <el-table-column
+                    prop="animalName"
+                    label="动物名称"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="sex"
+                    label="性别"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="isLive"
+                    align="center"
+                    label="存活状态">
+            </el-table-column>
+
+<!--            <el-table-column-->
+<!--                    align="center"-->
+<!--                    label="操作">-->
+
+<!--                <el-row>-->
+<!--                    <el-button type="success">查看</el-button>-->
+<!--                    <el-button type="primary">修改</el-button>-->
+<!--                    <el-button type="danger">删除</el-button>-->
+<!--                </el-row>-->
+
+<!--            </el-table-column>-->
+<!--            这样写 就可以通过scope和row获取每一行的数据-->
+            <el-table-column label="操作" align="center">
+
+                <template slot-scope="scope">
+
+                    <el-button type="success"
+                                @click="selectAnimal(scope.$index, scope.row) ">查看</el-button>
+
+                    <el-button type="primary"
+                               @click="updateGetId(scope.$index, scope.row)
+                                        reviewAnimal(scope.$index, scope.row)
+                                        update_dialogVisible = true">修改
+                    </el-button>
+
+                    <el-button type="danger"
+                               @click="deleteById(scope.$index, scope.row)">删除
+                    </el-button>
+
+                </template>
+
+            </el-table-column>
+
+        </el-table>
+    </template>
+
+
+    <!--分页工具条-->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="5"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+    </el-pagination>
+
+
+<!--    联系按钮-->
+    <el-row>
+
+        <el-button type="primary" plain @click="selectMessage">查看留言</el-button>
+
+    </el-row>
+
+
+</div>
+
+
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script>
+    new Vue({
+        el: "#app",
+        // 页面一经加载 便会执行mounted
+        mounted(){
+     //       提示登陆成功
+            this.$notify({
+                title: '成功',
+                message: '恭喜您，登陆成功~',
+                type: 'success'
+            });
+            this.selectAll();
+
+        },
+        methods: {
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex === 1) {
+                    return 'warning-row';
+                } else if (rowIndex === 3) {
+                    return 'success-row';
+                }
+                return '';
+            },
+            // 复选框选中后执行的方法
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                // console.log(this.multipleSelection)
+            },
+            // 查询方法
+            onSubmit() {
+               // console.log(this.animal);
+                this.selectAll();
+            },
+
+            //分页
+            handleSizeChange(val) {
+                // console.log(`每页 ${val} 条`);
+                this.pageSize = val;
+                this.selectAll();
+            },
+            handleCurrentChange(val) {
+                // console.log(`当前页: ${val}`);
+                this.currentPage = val;
+                this.selectAll();
+            },
+            //查询所有
+            selectAll(){
+                    // 不分页 直接查询所有
+
+                // let _this = this;
+                // axios({
+                //     method:"get",
+                //     url:"http://localhost:8080/Hait-Animal/animal/selectAll"
+                // }).then(function (resp){
+                //     _this.tableData = resp.data;
+                // })
+
+                    // 分页查询
+                // let _this = this;
+                // axios({
+                //     method:"post",
+                //     url:"http://localhost:8080/Hait-Animal/animal/selectByPage?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                //     // 条件查询的内容封装brand对象
+                //     data:this.animal
+                //     // 获取数据后 执行function回调函数
+                // }).then(function (resp){
+                //     //表格数据模型叫tableData 将response的集合数据显示到页面表格中 {rows[],totalCount}
+                //     _this.tableData = resp.data.rows;
+                //     // 赋值总也码数 左边的totalCount为分页工具条中即前端的totalCount
+                //     // 右边的totalCount 为 后端响应给前端json数据 即pageBean中的totalCount
+                //     _this.totalCount = resp.data.totalCount;
+                // })
+
+                    // 条件分页查询
+                let _this = this;
+                axios({
+                    method:"post",
+                    url:"http://localhost:8080/Hait-Animal/animal/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    // 条件查询的内容封装brand对象
+                    data:this.animal
+                    // 获取数据后 执行function回调函数
+                }).then(resp =>{
+                    //表格数据模型叫tableData 将response的集合数据显示到页面表格中 {rows[],totalCount}
+                    _this.tableData = resp.data.rows;
+                    // 赋值总也码数 左边的totalCount为分页工具条中即前端的totalCount
+                    // 右边的totalCount 为 后端响应给前端json数据 即pageBean中的totalCount
+                    _this.totalCount = resp.data.totalCount;
+                })
+            },
+            // 添加动物
+            addAnimal(){
+
+                let _this = this;
+                // 发送ajax请求 将添加的数据传给后端
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/Hait-Animal/animal/addAnimal",
+                    // axios中的this为浏览器 而外面的this为vue对象
+                    data: _this.animal
+                }).then(function (resp){
+                    // 判断是否添加成功
+                    if(resp.data == "success"){
+                        // 一个提示信息
+                        _this.$message({
+                            message: '恭喜您,添加成功~',
+                            type: 'success'
+                        });
+                    }
+
+                    //    关闭页面
+                    _this.dialogVisible = false;
+
+                    // 清空添加模型中的数据 否则下次进行添加会回显上次添加的数据
+                    _this.deletePreviousAnimal();
+
+                    // 跳转页面 查询所有
+                    _this.selectAll();
+                })
+            },
+            deleteById(index,row){
+                // 弹出提示框防止误操作 确定执行then逻辑 取消执行catch
+                this.$confirm('是否确定删除, 请选择?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //执行删除逻辑
+                    // 1.发送ajax请求
+                    let _this = this;
+                    // console.log("删除" + row.id);
+                    // 发送ajax请求 将添加的数据传给后端
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/Hait-Animal/animal/deleteById",
+                        // axios中的this为浏览器 而外面的this为vue对象
+                        data: _this.selectedIdDel = row.id
+                    }).then(function (resp){
+                        // 判断是否添加成功
+                        if(resp.data == "success"){
+                            // 一个提示信息
+                            _this.$message({
+                                message: '恭喜您,删除成功~',
+                                type: 'success'
+                            });
+                        }
+                        // 跳转页面 查询所有
+                        _this.selectAll();
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            // 批量删除
+            deleteByIds(){
+                // 弹出提示框防止误操作 确定执行then逻辑 取消执行catch
+                this.$confirm('是否删除所选数据, 请选择?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    //执行删除逻辑
+                    // 1.判断用户是否选择数据 避免删除0 误操作
+                    if(this.multipleSelection.length == 0){
+                        //alert("删除失败~ 请选择要删除的元素")
+                        this.$alert('删除失败~ 请选择要删除的元素', '标题名称', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                                this.$message({
+                                    type: 'warning',
+                                    message: `action: ${ action }`
+                                });
+                            }
+                        });
+                    }else {
+
+                        let selectionElement; // 被选中的元素 一条数据
+                        for (let i = 0; i < this.multipleSelection.length; i++) {
+                            selectionElement = this.multipleSelection[i];
+                            this.selectedIdsDel[i] = selectionElement.id;
+                        }
+                        // 2.发送ajax请求
+                        let _this = this;
+                        // 发送ajax请求 将添加的数据传给后端
+                        axios({
+                            method: "post",
+                            url: "http://localhost:8080/Hait-Animal/animal/deleteByIds",
+                            // axios中的this为浏览器 而外面的this为vue对象
+                            data: _this.selectedIdsDel
+                        }).then(function (resp){
+                            // 判断是否添加成功
+                            if(resp.data == "success"){
+                                // 一个提示信息
+                                _this.$message({
+                                    message: '恭喜您,删除成功~',
+                                    type: 'success'
+                                });
+                            }
+                            // 跳转页面 查询所有
+                            _this.selectAll();
+                        })
+
+                    }
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            // 修改动物数据前 要获得用户选择的id
+            updateGetId(index,row){
+                this.updateAnimal.id = row.id;
+            },
+            //修改动物数据前 要回显动物信息 将数据回显至updateAnimal模型中
+            reviewAnimal(index,row){
+                this.updateAnimal.animalName = row.animalName;
+                this.updateAnimal.sex = row.sex;
+                this.updateAnimal.isLive = row.isLive;
+                this.updateAnimal.description = row.description;
+                this.updateAnimal.likes = row.likes;
+            },
+            // 修改动物信息
+            updateById(){
+                let _this = this;
+                // 发送ajax请求 将添加的数据传给后端
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/Hait-Animal/animal/updateById",
+                    // axios中的this为浏览器 而外面的this为vue对象
+                    data: _this.updateAnimal
+                }).then(function (resp){
+                    // 判断是否添加成功
+                    if(resp.data == "success"){
+                        // 一个提示信息
+                        _this.$message({
+                            message: '恭喜您,修改成功~',
+                            type: 'success'
+                        });
+                    }
+
+                    //    关闭页面
+                    _this.update_dialogVisible = false;
+
+                    // 跳转页面 查询所有
+                    _this.selectAll();
+                })
+            },
+            deletePreviousAnimal(){
+                this.animal.animalName = '';
+                this.animal.sex = '';
+                this.animal.isLive = '';
+                this.animal.description = '';
+            },
+            selectAnimal(index,row){
+                    //执行查看逻辑
+                    // 1.发送ajax请求
+                    let _this = this;
+                    // console.log("查看" + row.id);
+                    // 发送ajax请求 将添加的数据传给后端
+                    axios({
+                        method: "post",
+                        url: "http://localhost:8080/Hait-Animal/animal/selectAnimal",
+                        // axios中的this为浏览器 而外面的this为vue对象
+                        data: _this.selectedIdAnimal = row.id
+                    }).then(function (resp){
+                        // 希望将后端得到的json格式据animal(resp.data) 转发给另一个vue页面
+                        // 不会跳转vue  那就只好跳转jsp了。。。 因为是ajax的缘故 后台无法直接跳转jsp
+                        // 要使用window.location.href来进行跳转
+                        _this.skip();
+                    })
+
+            },
+            skip(){
+                //alert("1");
+                window.location.href = "http://localhost:8080/Hait-Animal/selectAnimal.jsp";
+            },
+            // 查看相关留言信息
+            selectMessage(){
+                window.location.href = "http://localhost:8080/Hait-Animal/message.html"
+            },
+
+        },
+        data() {
+            return {
+                // 当前页码
+                currentPage: 1,
+                // 每页显示条数 默认五条
+                pageSize : 5,
+                // 总记录条数
+                totalCount : 100,
+                // 删除时 被选中的id
+                selectedIdDel : 1,
+                // 查看时 被选中的id
+                selectedIdAnimal : 1,
+                // 批量删除 被选中的ids们
+                selectedIdsDel : [],
+                // 添加数据对话框是否展示的标记
+                dialogVisible: false,
+                // 修改数据对话框是否展示标记
+                update_dialogVisible : false,
+                // 添加方法动物模型数据
+                animal: {
+                    id:"",
+                    animalName: '',
+                    sex:"",
+                    isLive: '',
+                    description:"",
+                    likes: ''
+                },
+                // 修改方法动物模型数据
+                updateAnimal: {
+                    id:"",
+                    animalName: '',
+                    sex:"",
+                    isLive: '',
+                    description:"",
+                    likes: ''
+                },
+                // 复选框选中数据集合
+                multipleSelection: [],
+                // 动物表格数据
+                tableData: [{
+                    animalName: '大黄',
+                    sex: '男',
+                    isLive: '活',
+                    description: "不错的小黄狗",
+                    likes : "0"
+                }, {
+                    animalName: '大黄',
+                    sex: '男',
+                    isLive: '活',
+                    description: "不错的小黄狗",
+                    likes : "0"
+                }, {
+                    animalName: '大黄',
+                    sex: '男',
+                    isLive: '活',
+                    description: "不错的小黄狗",
+                    likes : "0"
+                }, {
+                    animalName: '大黄',
+                    sex: '男',
+                    isLive: '活',
+                    description: "不错的小黄狗",
+                    likes : "0"
+                }]
+            }
+        }
+    })
+
+</script>
+
+</body>
+</html>
