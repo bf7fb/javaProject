@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改宿舍</title>
+</head>
+<body>
+<form th:action="@{/dorm}" method="post">
+    <input type="hidden" name="_method" value="put">
+    <input type="hidden" name="dormId" th:value="${dorm.dormId}">
+    <table>
+        <tr>
+            <th colspan="2">修改宿舍</th>
+        </tr>
+
+        <tr>
+            <td>宿舍名称</td>
+            <td>
+                <input type="text" name="dormName" th:value="${dorm.dormName}">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="修改">
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

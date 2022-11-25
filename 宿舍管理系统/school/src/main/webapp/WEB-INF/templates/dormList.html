@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>宿舍列表</title>
+</head>
+<body>
+
+<div id="app">
+<form th:action="@{/dorm/selectByCondition}" method="post">
+    <table>
+        <tr>
+            <td colspan="2" align="center">
+                查找宿舍
+            </td>
+        </tr>
+        <tr>
+            <td>宿舍名称</td>
+            <td>
+                <input type="text" name="dormName">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="查找" >
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+    <br>
+
+<!--    查找学生-->
+    <form th:action="@{/student/selectByCondition}" method="post">
+        <table>
+            <tr>
+                <td colspan="2" align="center">
+                    查找学生
+                </td>
+            </tr>
+            <tr>
+                <td>相关信息</td>
+                <td>
+                    <input type="text" name="message">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="查找" >
+                </td>
+            </tr>
+
+        </table>
+    </form>
+
+<!--    展示数据-->
+    <table>
+        <tr>
+            <th colspan="6">宿舍列表</th>
+        </tr>
+        <tr>
+            <th>宿舍id</th>
+            <th>宿舍名称</th>
+        </tr>
+
+        <tr th:each="dorm:${dorms}" >
+            <td th:text="${dorm.dormId}"></td>
+            <td th:text="${dorm.dormName}"></td>
+            <td>
+                <a th:href="@{'/deleteDorm/'+${dorm.dormId}}" >删除</a>
+
+                <a th:href="@{'/dorm/'+${dorm.dormId}}">修改</a>
+
+                <a th:href="@{'/student/'+${dorm.dormId}}">查看</a>
+
+                <a th:href="@{'/to/addstu/'+${dorm.dormId}}">为这个宿舍添加成员</a>
+
+<!--                <a th:href="@{'/to/addstu'}">为这个宿舍添加成员</a>-->
+
+            </td>
+        </tr>
+
+    </table>
+<script>
+
+</script>
+
+
+
+</div>
+</body>
+</html>

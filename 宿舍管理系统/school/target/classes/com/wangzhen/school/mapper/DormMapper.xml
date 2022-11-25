@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wangzhen.school.mapper.DormMapper">
+
+<!--    <select id="selecyByCondition" resultType="com.wangzhen.school.pojo.Dorm">-->
+<!--        select *-->
+<!--        from dorm-->
+<!--        <where>-->
+<!--            <if test="dorm.dormName != null and dorm.dormName != '' ">-->
+<!--                dorm_name like #{dorm.dormName}-->
+<!--            </if>-->
+<!--        </where>-->
+
+
+<!--    </select>-->
+</mapper>

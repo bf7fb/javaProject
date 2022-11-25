@@ -1,0 +1,10 @@
+com\wangzhen\school\mapper\DormMapper.class
+com\wangzhen\school\pojo\Dorm.class
+com\wangzhen\school\service\student\StuService.class
+com\wangzhen\school\service\student\StuServiceImpl.class
+com\wangzhen\school\controller\StudentController.class
+com\wangzhen\school\controller\DormController.class
+com\wangzhen\school\pojo\Student.class
+com\wangzhen\school\mapper\StudentMapper.class
+com\wangzhen\school\service\dorm\DormService.class
+com\wangzhen\school\service\dorm\DormServiceImpl.class

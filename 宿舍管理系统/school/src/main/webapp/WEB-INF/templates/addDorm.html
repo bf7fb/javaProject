@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加宿舍</title>
+</head>
+<body>
+<form th:action="@{/dorm}" method="post">
+    <table>
+        <tr>
+            <th colspan="2">add employee</th>
+        </tr>
+        <tr>
+            <td>宿舍名称</td>
+            <td>
+                <input type="text" name="dormName">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="add">
+            </td>
+        </tr>
+
+    </table>
+</form>
+</body>
+</html>

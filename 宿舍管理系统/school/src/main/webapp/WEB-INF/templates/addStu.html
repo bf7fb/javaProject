@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加学生</title>
+</head>
+<body>
+
+<form id="addStu" th:action="@{/student}" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <th colspan="2">添加学生</th>
+        </tr>
+        <tr>
+            <td>学生名称</td>
+            <td>
+                <input type="text" name="stuName">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生性别</td>
+            <td>
+                <input type="text" name="stuSex">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生年龄</td>
+            <td>
+                <input type="text" name="stuAge">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生班级</td>
+            <td>
+                <input type="text" name="stuClass">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生学号</td>
+            <td>
+                <input type="text" name="stuNum">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生图片</td>
+            <td>
+<!--                <input type="text" name="stuName">-->
+                <input type="file" name="photo">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="提交">
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+<script>
+<!--    获取当前页的宿舍dormId-->
+    let dormId = location.href.substring(location.href.lastIndexOf("/")+1);
+    console.log(dormId);
+
+    // 拼接到表单action属性中 后端获取到宿舍号dormId 就可以完成添加 客户是不知道dormId的
+    var form = document.getElementsByTagName("form")[0];
+    form.action = form.action + "/" + dormId;
+
+</script>
+
+</body>
+</html>

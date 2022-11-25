@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生信息</title>
+</head>
+<body>
+<h1> <font th:align="center"></font> 学生信息：</h1>
+<p><font color="black" size="4">学生序号:   <a th:text="${selectStudent.stuId}"></a> </font> </p>
+
+<p><font color="black" size="4">学生姓名:   <a th:text="${selectStudent.stuName}"></a> </font> </p>
+
+<p><font color="black" size="4">学生性别:   <a th:text="${selectStudent.stuSex}"></a> </font> </p>
+
+<p><font color="black" size="4">学生年龄:   <a th:text="${selectStudent.stuAge}"></a> </font> </p>
+
+<p><font color="black" size="4">学生班级:   <a th:text="${selectStudent.stuClass}"></a> </font> </p>
+
+<p><font color="black" size="4">学生学号:   <a th:text="${selectStudent.stuNum}"></a> </font> </p>
+
+<p><font color="black" size="4">学生图片 </font> </p>
+<img th:src="@{'/photo/'+ ${selectStudent.stuPhoto}}" th:width="200px" th:height="200px"/>
+
+
+<!--<img class="aligncenter" id="stuImag" width=200px height=200px src="">-->
+<!--<script>-->
+<!--        var picName =-->
+<!--      document.getElementById("stuImag").src = "/school/src/main/webapp/photo" + ${selectStudent.photo};-->
+<!--</script>-->
+</body>
+</html>

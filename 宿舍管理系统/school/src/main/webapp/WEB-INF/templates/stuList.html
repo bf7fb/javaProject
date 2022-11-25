@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>宿舍成员列表</title>
+</head>
+<body>
+
+
+<!--    展示数据-->
+<table>
+    <tr>
+        <th colspan="6">宿舍成员列表</th>
+    </tr>
+    <tr>
+        <th>学生id</th>
+        <th>学生名称</th>
+        <th>学生性别</th>
+        <th>学生年龄</th>
+        <th>学生班级</th>
+        <th>学生学号</th>
+        <th>学生宿舍</th>
+
+    </tr>
+
+    <tr th:each="student:${students}">
+        <td th:text="${student.stuId}"></td>
+        <td th:text="${student.stuName}"></td>
+        <td th:text="${student.stuSex}"></td>
+        <td th:text="${student.stuAge}"></td>
+        <td th:text="${student.stuClass}"></td>
+        <td th:text="${student.stuNum}"></td>
+        <td>
+            <a th:href="@{'/deleteStu/'+${student.stuId}}" >删除</a>
+
+            <a th:href="@{'/updateStudent/'+${student.stuId}}">修改</a>
+
+            <a th:href="@{'/selectStudent/'+${student.stuId}}">查看</a>
+        </td>
+    </tr>
+
+
+    <tr th:each="dorm:${dorms}">
+        <td th:text="${dorm.dormName}"></td>
+
+    </tr>
+
+</table>
+
+<script>
+    // 删除过后 我们希望重定向到当前宿舍页面 展现当前宿舍成员 因此还是需要获取当前href中的dormId
+    // let dormId = location.href.substring(location.href.lastIndexOf("/")+1);
+    //
+    // function deleteStu() {
+    //     document.getElementById("deleteDormId").href = document.getElementById("deleteDormId").href
+    //     + "/" + dormId;
+    //     console.log(dormId)
+    // }
+
+    // 修改过后 我们希望重定向到当前宿舍页面 展现当前宿舍成员 因此还是需要获取当前href中的dormId
+
+</script>
+</body>
+</html>

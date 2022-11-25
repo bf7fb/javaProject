@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生修改</title>
+</head>
+<body>
+<p><font color="red" size="4"><a th:text="${errDormMesage}"></a> </font> </p>
+<p><font color="red" size="4"><a th:text="${errFileMesage}"></a> </font> </p>
+
+<form th:action="@{/student}" method="post" enctype="multipart/form-data">
+<!--    <input type="hidden" name="_method" value="put">-->
+    <input type="hidden" name="stuId" th:value="${updateStu.stuId}">
+    <table>
+        <tr>
+            <th colspan="2">修改学生</th>
+        </tr>
+
+        <tr>
+            <td>学生名称</td>
+            <td>
+                <input type="text" name="stuName" th:value="${updateStu.stuName}">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生性别</td>
+            <td>
+                <input type="text" name="stuSex" th:value="${updateStu.stuSex}">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生年龄</td>
+            <td>
+                <input type="text" name="stuAge" th:value="${updateStu.stuAge}">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生班级</td>
+            <td>
+                <input type="text" name="stuClass" th:value="${updateStu.stuClass}">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生学号</td>
+            <td>
+                <input type="text" name="stuNum" th:value="${updateStu.stuNum}">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生宿舍Id</td>
+            <td>
+                <input type="text" name="stuDormId" th:value="${updateStu.stuDormId}">
+            </td>
+        </tr>
+
+        <tr>
+            <td>学生图片</td>
+            <td>
+                <!--                <input type="text" name="stuName">-->
+                <input type="file" name="photo" >
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="修改">
+            </td>
+        </tr>
+
+    </table>
+</form>
+</body>
+</html>
