@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加音乐</title>
+
+</head>
+<body>
+
+
+<p align="center"><font color="red" size="2"><a th:text="${addMusicMessageAdmin}"></a> </font> </p>
+<form id="addMusic" th:action="@{/addMusicAdmin}" method="post" enctype="multipart/form-data">
+    <table align="center">
+        <tr>
+            <th colspan="2">添加音乐</th>
+        </tr>
+        <tr>
+            <td>音乐名称</td>
+            <td>
+                <input type="text" name="musicName">
+            </td>
+        </tr>
+
+        <tr>
+            <td>音乐作者</td>
+            <td>
+                <input type="text" name="musicAuthor">
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>上传音乐</td>
+            <td>
+                <input type="file" name="mp3">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="提交">
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+
+
+<style type="text/css">
+
+    /*body {*/
+    /*    background-image: url('../../images/search.jpg');*/
+    /*    background-repeat:repeat-x；*/
+    /*}*/
+
+    body {
+        background-image: url('../images/addMusicAdmin.jpg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-attachment: fixed;
+    }
+
+
+</style>
+
+</body>
+</html>

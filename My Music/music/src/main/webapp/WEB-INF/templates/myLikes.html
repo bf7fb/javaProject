@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的音乐</title>
+
+
+
+</head>
+<body>
+
+<p><font color="red" size="1"><a th:text="${addMessage}"></a> </font> </p>
+
+<!-- 在收藏中查找-->
+<!--    查找-->
+
+<form th:action="@{'/selectByConditionInMyLikes' + '/' + ${session.user.userId}}" method="post">
+  <table align="center">
+    <tr>
+      <td colspan="2" align="center">
+        我的收藏
+      </td>
+    </tr>
+    <tr>
+
+      <td>
+        <input style="height:31px;width:419px;font-size:12px;" type="text" name="message" placeholder="搜索收藏中的歌曲 tips:只能输入歌曲名称哦~">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <input style="font-size: medium; " type="submit" value="查找" >
+      </td>
+    </tr>
+
+  </table>
+</form>
+
+<!--    展示数据-->
+<br>
+<table align="center">
+  <tr>
+    <th colspan="6">我的收藏音乐列表</th>
+  </tr>
+  <tr>
+    <th>序号</th>
+    <th>音乐名称</th>
+    <th>音乐作者</th>
+    <th>播放音乐</th>
+    <th>删除音乐</th>
+  </tr>
+
+  <tr th:each="music,status:${myMusics}">
+    <td th:text="${status.count}"></td>
+    <td th:text="${music.musicName}"></td>
+    <td th:text="${music.musicAuthor}"></td>
+
+    <td>
+      <a th:href="@{'/selectMusic/' + ${music.musicId}}">播放</a>
+    </td>
+
+    <td>
+      <a th:href="@{'/deleteMyMusicById/' + ${session.user.userId} + '/' + ${music.musicId}}">删除</a>
+    </td>
+
+  </tr>
+
+
+  <style type="text/css">
+
+
+    body {
+        /*background-image: url('../images/myLikes.jpg');*/
+        /*background-repeat: repeat;*/
+        background: url('../images/myLikes.jpg') no-repeat;
+        background-size: 100% 100% ;
+        background-attachment: fixed;
+
+    }
+
+
+  </style>
+
+</table>
+
+</body>
+</html>

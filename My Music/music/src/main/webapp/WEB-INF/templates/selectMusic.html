@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的音乐</title>
+</head>
+<body>
+<h1> 歌曲：</h1>
+
+<p><font color="black" size="4">歌曲名称:   <a th:text="${selectMusic.musicName}"></a> </font> </p>
+
+<p><font color="black" size="4">歌曲作者:   <a th:text="${selectMusic.musicAuthor}"></a> </font> </p>
+
+<p><font color="black" size="4">播放歌曲:   </font> </p>
+<audio controls autoplay >
+
+<!--    播放音乐-->
+<!--    <source th:src="@{'/musics/1997-01-CET6.mp3'}" type="audio/mpeg">-->
+    <source th:src="@{'/music/' + ${selectMusic.musicAddress}}" type="audio/mpeg">
+
+</audio>
+
+<!--设置背景图片-->
+<style type="text/css">
+
+
+    body {
+        background-image: url('../images/selectMusic.jpg');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-attachment: fixed;
+
+    }
+
+
+</style>
+</body>
+</html>

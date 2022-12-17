@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理界面</title>
+</head>
+<body>
+<h2 align="center">管理员界面</h2>
+
+<a style="display: block; text-align: center;color:red;" th:href="@{/to/addMusicAdmin}">我要添加音乐</a>
+
+<br>
+
+<!--    查找-->
+<form th:action="@{/selectByConditionAdmin}" method="post">
+    <table align="center">
+
+        <tr>
+            <td>
+                <input style="height:31px;width:319px;font-size:12px;" type="text" name="message" placeholder="输入您想听的歌曲/歌手">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input style="font-size: medium; " type="submit" value="查找" >
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+
+<!--    展示数据-->
+<table align="center">
+    <tr>
+        <th colspan="6">音乐列表</th>
+    </tr>
+    <tr>
+        <th>序号</th>
+        <th>音乐名称</th>
+        <th>音乐作者</th>
+        <th>播放音乐</th>
+        <th>删除音乐</th>
+
+    </tr>
+
+    <tr th:each="music,status:${musicListAdmin}">
+        <td th:text="${status.count}"></td>
+        <td th:text="${music.musicName}"></td>
+        <td th:text="${music.musicAuthor}"></td>
+
+        <td>
+            <a th:href="@{'/selectMusic/' + ${music.musicId}}">播放</a>
+        </td>
+
+        <td>
+            <a th:href="@{'/deleteMusicById/' + ${music.musicId}}">删除</a>
+        </td>
+    </tr>
+
+</table>
+
+<style type="text/css">
+
+
+
+    body {
+        /*background-image: url('images/adminMusic.jpg');*/
+        /*background-repeat: no-repeat;*/
+        /*background-size: 100%;*/
+        background: url('images/adminMusic.jpg') no-repeat;
+        background-size: 100% 100% ;
+        background-attachment: fixed;
+    }
+
+
+
+
+</style>
+
+</body>
+</html>

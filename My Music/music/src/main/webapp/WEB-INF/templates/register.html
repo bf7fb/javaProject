@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+
+<!-- 表格垂直居中-->
+    <style type="text/css">
+        .divForm{
+            position: absolute;/*绝对定位*/
+            width: 300px;
+            height: 200px;
+
+            border: 1px solid pink;
+            text-align: center;/*(让div中的内容居中)*/
+            top: 60%;
+            left: 50%;
+            margin-top: -200px;
+            margin-left: -150px;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="divForm">
+<form th:action="@{/register}" method="post" >
+
+    <table align="center">
+        <tr>
+            <th style="font-size: x-large" bgcolor="#ffc0cb" colspan="2">注册</th>
+        </tr>
+
+        <tr>
+            <td  bgcolor="#ffc0cb">账号：</td>
+            <td >
+                <input type="text" name="username" placeholder="请输入账号" >
+            </td>
+        </tr>
+
+        <tr>
+            <td  bgcolor="#ffc0cb"> 密码：</td>
+            <td>
+                <input type="text" name="password" placeholder="请输入密码">
+            </td>
+        </tr>
+
+        <tr>
+            <td  colspan="2">
+                <input  type="submit" value="注册">
+            </td>
+        </tr>
+
+    </table>
+</form>
+</div>
+
+<!--显示注册信息-->
+<p><font color="red" size="1"><a th:text="${registerMessage}"></a> </font> </p>
+
+<!--    背景图片-->
+<!-- http://localhost:63342/MyJavaProject/music/src/main/webapp/WEB-INF/templates/images/register.jpg
+template我们加了前缀webinf/templates  因此图片路径要../../-->
+<style type="text/css">
+
+            body {
+                   background-image: url('../images/register.jpg');
+                   background-repeat:repeat-x；
+            }
+
+</style>
+
+</body>
+</html>
+
+

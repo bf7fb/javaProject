@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的音乐</title>
+</head>
+<body>
+<!--    展示数据-->
+<table align="center">
+    <tr>
+        <th style="color: deeppink" colspan="6">音乐列表</th>
+    </tr>
+    <tr>
+        <th style="color: deeppink">序号</th>
+        <th style="color: deeppink">音乐名称</th>
+        <th style="color: deeppink">音乐作者</th>
+        <th style="color: deeppink">播放音乐</th>
+        <th style="color: deeppink">添加收藏</th>
+
+    </tr>
+
+    <tr th:each="music,status:${musics}">
+        <td th:text="${status.count}"></td>
+        <td th:text="${music.musicName}"></td>
+        <td th:text="${music.musicAuthor}"></td>
+
+        <td>
+            <a style="color: deeppink" th:href="@{'/selectMusic/' + ${music.musicId}}">播放</a>
+        </td>
+
+        <td>
+            <a style="color: deeppink" th:href="@{'/addMyLikes/'+ ${session.user.userId} + '/' + ${music.musicId}}">收藏</a>
+        </td>
+    </tr>
+
+</table>
+
+<style type="text/css">
+
+    body {
+        background-image: url('images/music.jpg');
+        background-repeat:repeat-x；
+
+    }
+
+    /*body {*/
+    /*    background-image: url('../../images/music.jpg');*/
+    /*    background-repeat: no-repeat;*/
+    /*    background-size: 100%;*/
+    /*}*/
+
+
+</style>
+</body>
+</html>
